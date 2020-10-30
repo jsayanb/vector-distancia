@@ -1,0 +1,18 @@
+//METODO PARA REALIZAR ALOGRITMO VECTOR DISTANCIA
+
+void Vector_Distancia(int inicial) {
+    inicializar(); //Inizialiar Arreglo
+    distancia[inicial] = 0; // Inicializar distancia inicial como "0"
+    
+    for (int i = 1; i <= V - 1; ++i) { //Iteramos |V| - 1 veces
+        for (int actual = 1; actual <= V; ++actual) {  
+            for (int j = 0; j < ady[actual].size(); ++j) { //revisar adyacentes del vertice actual
+                int adyacente = ady[actual][j].first;    //id del vertice adyacente
+                int peso = ady[actual][j].second;        //peso de la arista que une actual con adyacente ( actual , adyacente )
+                //Realizamos paso de relajacion para la arista actual
+                relajacion(actual, adyacente, peso);
+            }
+        }
+    }
+    
+    
