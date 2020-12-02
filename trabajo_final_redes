@@ -1,0 +1,100 @@
+//METODO PARA REALIZAR ALOGRITMO VECTOR DISTANCIA - JAVA /EJECUTAR EN NETBEANS 2.8
+//SAYÁN BARRETO JOSÉ LEONARDO
+
+import java.util.Scanner; //Paquete para Scanner
+ 
+public class BellmanFord 
+{
+    private int Distancias[]; // Creamos un array con el nombre de Distancias
+    private int Numero_Routers; // Número de Routers
+    public static final int MAX_VALUE = 999; // Valor estático el cual no se va a poder sobrepasar el valor de distancia
+ 
+    public BellmanFord(int numero_vertices)
+    {
+        this.Numero_Routers = numero_vertices;
+        Distancias = new int[numero_vertices + 1];
+    }
+ 
+    public void BellmanFord_Evaluacion(int source, int matriz_adyacencia[][])
+    {
+        for (int nodo = 1; nodo <= Numero_Routers; nodo++)
+        {
+            Distancias[nodo] = MAX_VALUE;
+        }
+ 
+        Distancias[source] = 0;
+        for (int nodo = 1; nodo <= Numero_Routers - 1; nodo++)
+        {
+            for (int nodo_origen = 1; nodo_origen <= Numero_Routers; nodo_origen++)
+            {
+                for (int nodo_destino = 1; nodo_destino <= Numero_Routers; nodo_destino++)
+                {
+                    if (matriz_adyacencia[nodo_origen][nodo_destino] != MAX_VALUE)
+                    {
+                        if (Distancias[nodo_destino] > Distancias[nodo_origen] 
+                                + matriz_adyacencia[nodo_origen][nodo_destino])
+                            Distancias[nodo_destino] = Distancias[nodo_origen]
+                                + matriz_adyacencia[nodo_origen][nodo_destino];
+                    }
+                }
+            }
+        }
+ 
+        for (int nodo_origen = 1; nodo_origen <= Numero_Routers; nodo_origen++)
+        {
+            for (int nodo_destino = 1; nodo_destino <= Numero_Routers; nodo_destino++)
+            {
+                if (matriz_adyacencia[nodo_origen][nodo_destino] != MAX_VALUE)
+                {
+                    if (Distancias[nodo_destino] > Distancias[nodo_origen]
+                           + matriz_adyacencia[nodo_origen][nodo_destino])
+                        System.out.println("Informativo: El grafo contiene valores negativos");
+                }
+            }
+        }
+ 
+        for (int vertice = 1; vertice <= Numero_Routers; vertice++)
+        {
+            System.out.println("La distancia hacia el nodo " + source + " hasta el nodo "
+                      + vertice + " es " + Distancias[vertice]);
+        }
+    }
+ 
+    public static void main(String... arg)
+    {
+        int Numero_Routers = 0; //número de routers iniciales = 0
+        int source; // Creamos una variable de Source
+        Scanner scanner = new Scanner(System.in);
+ 
+        System.out.println("Ingresa el número de routers a enrutar: ");
+        Numero_Routers = scanner.nextInt(); // Ingreso de número de routers deseados
+ 
+        int matriz_adyacencia[][] = new int[Numero_Routers + 1][Numero_Routers + 1];
+        System.out.println("Ingresa la matriz de adyacencia \n (Ejemplo de una matriz de 3 routers: 4 5 6 (con espacios entre cada peso))");
+        for (int nodo_origen = 1; nodo_origen <= Numero_Routers; nodo_origen++)
+        {
+            for (int nodo_destino = 1; nodo_destino <= Numero_Routers; nodo_destino++)
+            {
+                matriz_adyacencia[nodo_origen][nodo_destino] = scanner.nextInt();
+ 	        if (nodo_origen == nodo_destino)
+                {
+                    matriz_adyacencia[nodo_origen][nodo_destino] = 0;
+                    continue;
+                }
+                if (matriz_adyacencia[nodo_origen][nodo_destino] == 0)
+                {
+                    matriz_adyacencia[nodo_origen][nodo_destino] = MAX_VALUE;
+                }
+            }
+        }
+ 
+        System.out.println("Ingresa el nodo origen: ");
+        source = scanner.nextInt();
+ 
+        BellmanFord bellmanford = new BellmanFord(Numero_Routers);
+        bellmanford.BellmanFord_Evaluacion(source, matriz_adyacencia);
+        scanner.close();	
+    }
+}
+
+// ALGORITMO BASADO EN EL PRESENTE ARCHIVO AUDIOVISUAL: https://www.youtube.com/watch?v=dmS1t2twFrI&t=102s
